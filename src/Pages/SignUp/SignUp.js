@@ -1,7 +1,58 @@
-import React from "react";
+import React, { useState } from "react";
 import { IoCloudUploadSharp } from "react-icons/io5";
 
 const SignUp = () => {
+  const [interestedSectors, setInterestedSectors] = useState([]);
+
+  const interestedSectorsHandler = (e) => {
+    interestedSectors.includes(e.target.value)
+      ? setInterestedSectors(
+          interestedSectors.filter((value) => value !== e.target.value)
+        )
+      : interestedSectors.push(e.target.value);
+  };
+
+  const registrationHandler = (event) => {
+    event.preventDefault();
+    const form = event.target;
+    const registrationType = form.registration_type.value;
+    const firstName = form.firstName.value;
+    const lastName = form.lastName.value;
+    const email = form.email.value;
+    const phoneNumber = form.phoneNumber.value;
+    const organization = form.organization.value;
+    const designation = form.designation.value;
+    const interestedSector = interestedSectors;
+    const need_help_with_lodging = form.need_help_with_lodging.value;
+    const create_business_profile = form.create_business_profile.value;
+
+    const userData = {
+      registrationType: registrationType,
+      firstName: firstName,
+      lastName: lastName,
+      email: email,
+      phoneNumber: phoneNumber,
+      organization: organization,
+      designation: designation,
+      interestedSector: interestedSector,
+      need_help_with_lodging: need_help_with_lodging,
+      create_business_profile: create_business_profile,
+    };
+
+    fetch("https://techxbazar-server-side.vercel.app/products/", {
+      method: "POST",
+      headers: {
+        "content-type": "application/json",
+      },
+      body: JSON.stringify(userData),
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        console.log(data);
+        alert("added successfully");
+      });
+  };
+
   return (
     <div>
       <div className="bg-[#F2F2F2] py-[32px]">
@@ -10,7 +61,7 @@ const SignUp = () => {
         </h2>
       </div>
       <div className="w-[780px] mx-auto my-[70px] px-3">
-        <form>
+        <form onSubmit={(e) => registrationHandler(e)}>
           <div>
             <p className="text-base font-bold mb-2 text-[#353535]">
               Registration Type
@@ -21,7 +72,7 @@ const SignUp = () => {
               name="registration_type"
               value="Foreign Delegate"
             />
-            <label for="foreign_delegate" className="mr-8 ml-1 text-[15px]">
+            <label htmlFor="foreign_delegate" className="mr-8 ml-1 text-[15px]">
               Foreign Delegate
             </label>
             <input
@@ -30,7 +81,7 @@ const SignUp = () => {
               name="registration_type"
               value="Local Delegate"
             />
-            <label for="local_delegate" className="ml-1 text-[15px]">
+            <label htmlFor="local_delegate" className="ml-1 text-[15px]">
               Local Delegate
             </label>
           </div>
@@ -47,6 +98,7 @@ const SignUp = () => {
                 <input
                   type="text"
                   className="border border-slate-700 rounded h-10 pl-2"
+                  name="firstName"
                 />
                 <label htmlFor="">First</label>
               </div>
@@ -54,6 +106,7 @@ const SignUp = () => {
                 <input
                   type="text"
                   className="border border-slate-700 rounded h-10 pl-2"
+                  name="lastName"
                 />
                 <label htmlFor="">Last</label>
               </div>
@@ -74,6 +127,7 @@ const SignUp = () => {
                   <input
                     type="text"
                     className="border border-slate-700 rounded h-10 pl-2 mt-1"
+                    name="email"
                   />
                 </div>
                 <div className="flex flex-col">
@@ -86,13 +140,14 @@ const SignUp = () => {
                   <input
                     type="text"
                     className="border border-slate-700 rounded h-10 pl-2 mt-1"
+                    name="phoneNumber"
                   />
                 </div>
               </div>
             </div>
           </div>
 
-          {/* Organization and desination */}
+          {/* Organization and designation */}
           <div>
             <div className="mt-4">
               <div className="flex gap-3 mt-1">
@@ -106,6 +161,7 @@ const SignUp = () => {
                   <input
                     type="text"
                     className="border border-slate-700 rounded h-10 pl-2 mt-1"
+                    name="organization"
                   />
                 </div>
                 <div className="flex flex-col">
@@ -118,6 +174,7 @@ const SignUp = () => {
                   <input
                     type="text"
                     className="border border-slate-700 rounded h-10 pl-2 mt-1"
+                    name="designation"
                   />
                 </div>
               </div>
@@ -134,6 +191,7 @@ const SignUp = () => {
                     name="agribusiness"
                     id="agribusiness"
                     value="Agribusiness"
+                    onChange={(e) => interestedSectorsHandler(e)}
                   />
                   <label className="text-[15px]" htmlFor="agribusiness">
                     {" "}
@@ -146,6 +204,7 @@ const SignUp = () => {
                     name="ceramics"
                     id="ceramics"
                     value="Ceramics"
+                    onChange={(e) => interestedSectorsHandler(e)}
                   />
                   <label className="text-[15px]" htmlFor="ceramics">
                     {" "}
@@ -158,6 +217,7 @@ const SignUp = () => {
                     name="electronics_electrical_equipment"
                     id="electronics_electrical_equipment"
                     value="Electronics and Electrical Equipment"
+                    onChange={(e) => interestedSectorsHandler(e)}
                   />
                   <label
                     className="text-[15px]"
@@ -173,6 +233,7 @@ const SignUp = () => {
                     name="healthcare_services"
                     id="healthcare_services"
                     value="Healthcare Services"
+                    onChange={(e) => interestedSectorsHandler(e)}
                   />
                   <label className="text-[15px]" htmlFor="healthcare_services">
                     {" "}
@@ -185,6 +246,7 @@ const SignUp = () => {
                     name="jute_and_jute_products"
                     id="jute_and_jute_products"
                     value="Jute and Jute Products"
+                    onChange={(e) => interestedSectorsHandler(e)}
                   />
                   <label
                     className="text-[15px]"
@@ -200,6 +262,7 @@ const SignUp = () => {
                     name="light_engineering"
                     id="light_engineering"
                     value="Light Engineering"
+                    onChange={(e) => interestedSectorsHandler(e)}
                   />
                   <label className="text-[15px]" htmlFor="light_engineering">
                     {" "}
@@ -212,6 +275,7 @@ const SignUp = () => {
                     name="motorcycle_and_parts"
                     id="motorcycle_and_parts"
                     value="Motorcycle and Parts"
+                    onChange={(e) => interestedSectorsHandler(e)}
                   />
                   <label className="text-[15px]" htmlFor="motorcycle_and_parts">
                     {" "}
@@ -224,6 +288,7 @@ const SignUp = () => {
                     name="plastics"
                     id="plastics"
                     value="Plastics"
+                    onChange={(e) => interestedSectorsHandler(e)}
                   />
                   <label className="text-[15px]" htmlFor="plastics">
                     {" "}
@@ -236,6 +301,7 @@ const SignUp = () => {
                     name="shipbuilding"
                     id="shipbuilding"
                     value="Shipbuilding"
+                    onChange={(e) => interestedSectorsHandler(e)}
                   />
                   <label className="text-[15px]" htmlFor="shipbuilding">
                     {" "}
@@ -251,6 +317,7 @@ const SignUp = () => {
                     name="automobile"
                     id="automobile"
                     value="Automobile"
+                    onChange={(e) => interestedSectorsHandler(e)}
                   />
                   <label className="text-[15px]" htmlFor="automobile">
                     {" "}
@@ -263,6 +330,7 @@ const SignUp = () => {
                     name="construction_materials"
                     id="construction_materials"
                     value="Construction Materials"
+                    onChange={(e) => interestedSectorsHandler(e)}
                   />
                   <label
                     className="text-[15px]"
@@ -278,6 +346,7 @@ const SignUp = () => {
                     name="financial_sector"
                     id="financial_sector"
                     value="Financial Sector"
+                    onChange={(e) => interestedSectorsHandler(e)}
                   />
                   <label className="text-[15px]" htmlFor="financial_sector">
                     {" "}
@@ -290,6 +359,7 @@ const SignUp = () => {
                     name="IT_and_IT_enabled_services​"
                     id="IT_and_IT_enabled_services​"
                     value="IT and IT-enabled Services​"
+                    onChange={(e) => interestedSectorsHandler(e)}
                   />
                   <label
                     className="text-[15px]"
@@ -305,6 +375,7 @@ const SignUp = () => {
                     name="leather_and_footwear"
                     id="leather_and_footwear"
                     value="Leather and Footwear"
+                    onChange={(e) => interestedSectorsHandler(e)}
                   />
                   <label className="text-[15px]" htmlFor="leather_and_footwear">
                     {" "}
@@ -317,6 +388,7 @@ const SignUp = () => {
                     name="medical_equipment"
                     id="medical_equipment"
                     value="Medical Equipment"
+                    onChange={(e) => interestedSectorsHandler(e)}
                   />
                   <label className="text-[15px]" htmlFor="medical_equipment">
                     {" "}
@@ -329,6 +401,7 @@ const SignUp = () => {
                     name="pharmaceuticals_and_api"
                     id="pharmaceuticals_and_api"
                     value="Pharmaceuticals & API"
+                    onChange={(e) => interestedSectorsHandler(e)}
                   />
                   <label className="text-[15px]" htmlFor="">
                     {" "}
@@ -341,6 +414,7 @@ const SignUp = () => {
                     name="readymade_garments"
                     id="readymade_garments"
                     value="Readymade Garments"
+                    onChange={(e) => interestedSectorsHandler(e)}
                   />
                   <label className="text-[15px]" htmlFor="readymade_garments">
                     {" "}
@@ -390,7 +464,8 @@ const SignUp = () => {
               Submit
             </button>
             <button className="border border-[#c36] text-[#6b7280] px-5 py-2 rounded">
-              <IoCloudUploadSharp className="inline text-[#616875] text-lg" /> Save and Continue Later
+              <IoCloudUploadSharp className="inline text-[#616875] text-lg" />{" "}
+              Save and Continue Later
             </button>
           </div>
         </form>
