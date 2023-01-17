@@ -1,7 +1,10 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { IoCloudUploadSharp } from "react-icons/io5";
+import { AuthContext } from "../../contexts/AuthProvider/AuthProvider";
+import { FcGoogle } from "react-icons/fc";
 
 const SignUp = () => {
+  const { createUser, emailVerification, user, googleSignIn } = useContext(AuthContext);
   const [interestedSectors, setInterestedSectors] = useState([]);
 
   const interestedSectorsHandler = (e) => {
@@ -10,6 +13,31 @@ const SignUp = () => {
           interestedSectors.filter((value) => value !== e.target.value)
         )
       : interestedSectors.push(e.target.value);
+  };
+
+  const googleSignInHandler = () => {
+    googleSignIn()
+      .then((result) => {
+        // success message
+      })
+      .catch((err) => console.log(err));
+  };
+
+  const signUpHandler = (email, password) => {
+    createUser(email, password)
+      .then((result) => {
+        alert("account created successfully");
+        sendVerification();
+      })
+      .catch((err) => console.log(err));
+  };
+
+  const sendVerification = () => {
+    emailVerification()
+      .then((result) => {
+        alert("please check you email for verification");
+      })
+      .catch((err) => console.log(err));
   };
 
   const registrationHandler = (event) => {
@@ -25,6 +53,7 @@ const SignUp = () => {
     const interestedSector = interestedSectors;
     const need_help_with_lodging = form.need_help_with_lodging.value;
     const create_business_profile = form.create_business_profile.value;
+    const password = form.password.value;
 
     const userData = {
       registrationType: registrationType,
@@ -39,6 +68,8 @@ const SignUp = () => {
       create_business_profile: create_business_profile,
     };
 
+    signUpHandler(email, password);
+
     fetch("https://techxbazar-server-side.vercel.app/products/", {
       method: "POST",
       headers: {
@@ -50,6 +81,7 @@ const SignUp = () => {
       .then((data) => {
         console.log(data);
         alert("added successfully");
+        event.target.reset();
       });
   };
 
@@ -85,7 +117,7 @@ const SignUp = () => {
               Local Delegate
             </label>
           </div>
-          {/* name field */}
+
           <div className="mt-4">
             <label className="font-bold text-[#353535]">
               Name{" "}
@@ -99,6 +131,7 @@ const SignUp = () => {
                   type="text"
                   className="border border-slate-700 rounded h-10 pl-2"
                   name="firstName"
+                  defaultValue={user?.displayName?.split(" ")[0]}
                 />
                 <label htmlFor="">First</label>
               </div>
@@ -107,13 +140,13 @@ const SignUp = () => {
                   type="text"
                   className="border border-slate-700 rounded h-10 pl-2"
                   name="lastName"
+                  defaultValue={user?.displayName?.split(" ")[1]}
                 />
                 <label htmlFor="">Last</label>
               </div>
             </div>
           </div>
 
-          {/* email and phone */}
           <div>
             <div className="mt-4">
               <div className="flex gap-3 mt-1">
@@ -125,9 +158,10 @@ const SignUp = () => {
                     </small>
                   </label>
                   <input
-                    type="text"
+                    type="email"
                     className="border border-slate-700 rounded h-10 pl-2 mt-1"
                     name="email"
+                    defaultValue={user?.email}
                   />
                 </div>
                 <div className="flex flex-col">
@@ -147,7 +181,6 @@ const SignUp = () => {
             </div>
           </div>
 
-          {/* Organization and designation */}
           <div>
             <div className="mt-4">
               <div className="flex gap-3 mt-1">
@@ -456,6 +489,23 @@ const SignUp = () => {
             </label>
           </div>
 
+          <div className="mt-4">
+            <div className="flex flex-col">
+              <label className="font-bold text-[#353535]">
+                Password{" "}
+                <small>
+                  <em className="text-red-600 font-normal">(Required)</em>
+                </small>
+              </label>
+              <input
+                type="password"
+                className="border border-slate-700 rounded h-10 pl-2 mt-1 w-1/2"
+                name="password"
+                required
+              />
+            </div>
+          </div>
+
           <div className="flex gap-2 mt-11">
             <button
               className="border border-[#c36] hover:bg-[#c36] text-[#c36] hover:text-white px-5 py-2 rounded"
@@ -464,11 +514,17 @@ const SignUp = () => {
               Submit
             </button>
             <button className="border border-[#c36] text-[#6b7280] px-5 py-2 rounded">
-              <IoCloudUploadSharp className="inline text-[#616875] text-lg" />{" "}
+              <IoCloudUploadSharp className="inline text-[#929aa8] text-lg" />{" "}
               Save and Continue Later
             </button>
           </div>
         </form>
+        <button
+          onClick={googleSignInHandler}
+          className="border border-[#c36] hover:bg-slate-100 text-[#6b7280] px-5 py-2 rounded mt-10 w-2/5"
+        >
+          <FcGoogle className="inline text-xl" /> Sign In with Google
+        </button>
       </div>
     </div>
   );
