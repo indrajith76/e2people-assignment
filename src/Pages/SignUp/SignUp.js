@@ -8,6 +8,7 @@ const SignUp = () => {
     useContext(AuthContext);
   const [interestedSectors, setInterestedSectors] = useState([]);
   const [createBusinessProfile, setCreateBusinessProfile] = useState(false);
+  const [aboutBusiness, setAboutBusiness] = useState("");
 
   console.log(createBusinessProfile);
 
@@ -56,7 +57,12 @@ const SignUp = () => {
     const designation = form.designation.value;
     const interestedSector = interestedSectors;
     const need_help_with_lodging = form.need_help_with_lodging.value;
-    const create_business_profile = form.create_business_profile.value;
+    const street_address = form.street_address.value;
+    const city = form.city.value;
+    const state_province_region = form.state_province_region.value;
+    const zip_postalCode = form.zip_postalCode.value;
+    const country = form.country.value;
+    const business_website = form.business_website.value;
     const password = form.password.value;
 
     const userData = {
@@ -69,7 +75,13 @@ const SignUp = () => {
       designation: designation,
       interestedSector: interestedSector,
       need_help_with_lodging: need_help_with_lodging,
-      create_business_profile: create_business_profile,
+      infoAboutBusiness: aboutBusiness,
+      street_address,
+      city,
+      state_province_region,
+      zip_postalCode,
+      country,
+      business_website,
     };
 
     signUpHandler(email, password);
@@ -440,7 +452,7 @@ const SignUp = () => {
                     value="Pharmaceuticals & API"
                     onChange={(e) => interestedSectorsHandler(e)}
                   />
-                  <label className="text-[15px]" htmlFor="">
+                  <label className="text-[15px]" htmlFor="pharmaceuticals_and_api">
                     {" "}
                     Pharmaceuticals & API
                   </label>
@@ -511,10 +523,12 @@ const SignUp = () => {
                   id="about_business"
                   cols="30"
                   rows="10"
+                  maxLength="2000"
+                  onChange={(e) => setAboutBusiness(e.target.value)}
                   className="border border-slate-700 rounded h-[160px] p-2 mt-1 w-4/5"
                 ></textarea>
                 <small className="text-gray-500 mt-1">
-                  0 of 2000 max characters
+                  {aboutBusiness?.length} of 2000 max characters
                 </small>
               </div>
 
@@ -585,8 +599,8 @@ const SignUp = () => {
                 <input
                   type="text"
                   className="border border-slate-700 rounded h-10 pl-2 mt-1 w-[55%]"
-                  name="street_address"
-                  id="street_address"
+                  name="business_website"
+                  id="business_website"
                 />
               </div>
             </div>
