@@ -37,7 +37,6 @@ const AuthProvider = ({ children }) => {
     return () => unsubscribe();
   }, [user]);
 
-  console.log(user)
 
   const authInfo = {
     createUser,

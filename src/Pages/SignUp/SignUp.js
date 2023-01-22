@@ -4,8 +4,12 @@ import { AuthContext } from "../../contexts/AuthProvider/AuthProvider";
 import { FcGoogle } from "react-icons/fc";
 
 const SignUp = () => {
-  const { createUser, emailVerification, user, googleSignIn } = useContext(AuthContext);
+  const { createUser, emailVerification, user, googleSignIn } =
+    useContext(AuthContext);
   const [interestedSectors, setInterestedSectors] = useState([]);
+  const [createBusinessProfile, setCreateBusinessProfile] = useState(false);
+
+  console.log(createBusinessProfile);
 
   const interestedSectorsHandler = (e) => {
     interestedSectors.includes(e.target.value)
@@ -482,12 +486,111 @@ const SignUp = () => {
               name="create_business_profile"
               id="create_business_profile"
               value="Yes"
+              onChange={() => setCreateBusinessProfile(!createBusinessProfile)}
             />
             <label className="text-[15px]" htmlFor="create_business_profile">
               {" "}
               Yes
             </label>
           </div>
+
+          {createBusinessProfile && (
+            <div className="mt-4">
+              <div className="flex flex-col">
+                <label
+                  htmlFor="about_business"
+                  className="font-bold text-[#353535]"
+                >
+                  Short info about your business{" "}
+                  <small>
+                    <em className="text-red-600 font-normal">(Required)</em>
+                  </small>
+                </label>
+                <textarea
+                  name="about_business"
+                  id="about_business"
+                  cols="30"
+                  rows="10"
+                  className="border border-slate-700 rounded h-[160px] p-2 mt-1 w-4/5"
+                ></textarea>
+                <small className="text-gray-500 mt-1">
+                  0 of 2000 max characters
+                </small>
+              </div>
+
+              <div className="flex flex-col mt-4">
+                <label className="font-bold text-[#353535]">
+                  Business address{" "}
+                  <small>
+                    <em className="text-red-600 font-normal">(Required)</em>
+                  </small>
+                </label>
+                <input
+                  type="text"
+                  className="border border-slate-700 rounded h-10 pl-2 mt-1 w-full"
+                  name="street_address"
+                  id="street_address"
+                />
+                <label htmlFor="street_address">Street Address</label>
+              </div>
+
+              <div className="grid grid-cols-2 gap-x-4 gap-y-1">
+                <div className="flex flex-col">
+                  <input
+                    type="text"
+                    name="city"
+                    className="border border-slate-700 rounded h-10 pl-2 mt-1 w-full"
+                    id="city"
+                  />
+                  <label htmlFor="city">City</label>
+                </div>
+                <div className="flex flex-col">
+                  <input
+                    type="text"
+                    name="state_province_region"
+                    className="border border-slate-700 rounded h-10 pl-2 mt-1 w-full"
+                    id="state_province_region"
+                  />
+                  <label htmlFor="state_province_region">
+                    State / Province / Region
+                  </label>
+                </div>
+                <div className="flex flex-col">
+                  <input
+                    type="text"
+                    name="zip_postalCode"
+                    className="border border-slate-700 rounded h-10 pl-2 w-full"
+                    id="zip_postalCode"
+                  />
+                  <label htmlFor="zip_postalCode">ZIP / Postal Code</label>
+                </div>
+                <div className="flex flex-col">
+                  <input
+                    type="text"
+                    name="country"
+                    className="border border-slate-700 rounded h-10 pl-2 w-full"
+                    id="country"
+                  />
+                  <label htmlFor="country">Country</label>
+                </div>
+              </div>
+
+              <div className="flex flex-col mt-4">
+                <label className="font-bold text-[#353535]">
+                  Business website link{" "}
+                  <small>
+                    <em className="text-red-600 font-normal">(Required)</em>
+                  </small>
+                </label>
+                <input
+                  type="text"
+                  className="border border-slate-700 rounded h-10 pl-2 mt-1 w-[55%]"
+                  name="street_address"
+                  id="street_address"
+                />
+              </div>
+            </div>
+          )}
 
           <div className="mt-4">
             <div className="flex flex-col">
